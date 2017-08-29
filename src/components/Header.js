@@ -1,79 +1,116 @@
 import React, {Component} from 'react';
-import {Field,reduxForm} from 'redux-form';
+// import {connect} from 'react-redux';
+// import {Field,reduxForm} from 'redux-form';
 import styled from 'styled-components';
 
-import Modal from './Modal/Modal';
+import LoginModal from './Modal/LoginModal';
+import SignupModal from './Modal/SignupModal';
 
-const renderField = (field)=>(
-	<div className="form-group">
-		<label>{field.label}</label>
-		<input 
-			className="form-control"
-			type="text"
-			{...field.input}
-		/>
-		{field.meta.errors}
-	</div>
-)
+const NavBar = styled.nav.attrs({
+	className: "navbar"
+})`
+	font-family: "Kanit";
+`
 
-const LoginModal = ()=>(
-	<Modal>
-		{/* <Field/> */}
-		<p>Loginnn</p>
-	</Modal>
-)
 
-const RegisterModal = ()=>(
-	<Modal>
-		<p>testttt</p>
-	</Modal>
-)
 
-const RegisterButton = styled.
-
+// const Logo = styled.a.attrs({
+// 	className: "navbar-item"
+// })`
+// 	&:hover a{
+// 		display: none;
+// 	}
+// `;
 
 class Header extends Component{
+	constructor(){
+		super();
+		this.state = {
+			isLoginModalActive: false,
+			isSignupModalActive: false
+		}
+	}
+
+	toggleLoginModal(modalValue){
+		this.setState({isLoginModalActive: modalValue});
+	}
+
+	toggleSignupModal(modalValue){
+		this.setState({isSignupModalActive: modalValue})
+	}
+
 	render(){
 		return(
-			<nav className="navbar">
+			<NavBar>
 				<div className="navbar-brand">
-					<a className="navbar-item" href="http://bulma.io">
-						<img src="http://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28"/>
+					<a className="navbar-item" href="/">
+						{/* <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28"/> */}
+						<h1>Matchsage</h1>
 					</a>
 
-					<a className="navbar-item is-hidden-desktop" href="https://github.com/jgthms/bulma" target="">
+					{/* <a className="navbar-item is-hidden-desktop" href="https://github.com/jgthms/bulma" target="">
 						<span className="icon">
 							<i className="fa fa-github"></i>
 						</span>
-					</a>
+					</a> */}
 
-					<div className="navbar-end">
-						<div className="navbar-item">
-							<div className="field is-grouped">
-								<p className="control">
-									<a className="button is-primary modal-button" data-target="modal">
-										<span>สมัครมาชิก</span>
-									</a>
-									
-								</p>
-							</div>
-						</div>
+					<div className="navbar-burger burger" data-target="navMenu">
+						<span></span>
+						<span></span>
+						<span></span>
 					</div>
 				</div>
 
-				<LoginModal/>
-				<RegisterModal/>
-			</nav>
+				<div id="navMenu" className="navbar-menu">
+					<div className="navbar-end">
+
+						<div className="navbar-item">
+								<div className="field is-grouped">
+									{/* <p className="control"> */}
+									<p>
+										<a className="modal-button" data-target="LoginModal" 
+											onClick={()=>this.toggleLoginModal(true)}>
+											<span>เข้าสู่ระบบ</span>
+										</a>
+										
+									</p>
+								</div>
+							</div>
+
+						<div className="navbar-item">
+							<div className="field is-grouped">
+								<p className="control">
+									<a className="button is-primary modal-button" data-target="SignupModal" 
+										onClick={()=>this.toggleSignupModal(true)}>
+										<span>สมัครสมาชิก</span>
+									</a>	
+								</p>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<LoginModal modalState={this.state.isLoginModalActive} onCloseLoginModal={()=>this.toggleLoginModal(false)}/>
+				<SignupModal modalState={this.state.isSignupModalActive} onCloseSignupModal={()=>this.toggleSignupModal(false)}/> 
+			</NavBar>
 		)
 	}
 }	
 
-function validate(){
-	const errors = {};
-	return errors;
-}
+// function validate(){
+// 	const errors = {};
+// 	return errors;
+// }
 
-export default reduxForm({
-	validate,
-	form:'HeaderForm'
-})(Header);
+// export default reduxForm({
+// 	validate,
+// 	form:'HeaderForm'
+// })(Header);
+
+// function mapStateToProps({toggleLoginModal,toggleSignupModal}){
+// 	return {toggleLoginModal,toggleSignupModal};
+// }
+
+// export default connect(mapStateToProps)(Header);
+export default Header;
